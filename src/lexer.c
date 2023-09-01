@@ -1,0 +1,93 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/07 14:10:11 by tlemos-m          #+#    #+#             */
+/*   Updated: 2023/09/01 13:22:36 by tlemos-m         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../inc/minishell.h"
+
+int	main(int argc, char **argv, char **envp)
+{
+	char		*temp;
+	t_data		data;
+
+	temp = 0;
+	(void)argc;
+	(void)argv;
+	init_data(&data, envp);
+	signal_intercepter();
+	while (1)
+	{
+		data.path = get_paths(envp, data.path);
+		temp = readline("minishell$ ");
+		if (!temp && printf("exit\n"))
+			break ;
+		add_history(temp);
+		get_tokens(&data, temp);
+		free(temp);
+		free_list(&data.tokens);
+		free(data.pid);
+		data.pid = 0;
+	}
+	free_all(0, &data, 0);
+	rl_clear_history();
+	return (0);
+}
+
+void	init_data(t_data *data, char **env)
+{
+	get_env(env, data);
+	data->tokens = 0;
+	data->pid = 0;
+	unlink("here_doc");
+}
+
+/* This functions breaks the input into tokens according to grammar */
+int	get_tokens(t_data *data, char *str)
+{
+	int		i;
+	int		j;
+	char	*token;
+
+	i = 0;
+	unlink("here_doc");
+	while (str[i] != '\0')
+	{
+		while (str[i] && ft_isspace(str[i]))
+			i++;
+		if (!str[i])
+			break ;
+		if (ft_isforbidden_char(&str[i]))
+			return (1);
+		j = token_len(&str[i]);
+		if (!j)
+			return (1);
+		token = ft_substr(str, i, j);
+		i += j;
+		create_tokens(data, token);
+	}
+	parser(data);
+	return (0);
+}
+
+/* Function to create a node from the token found and cathegorise it */
+int	create_tokens(t_data *data, char *str)
+{
+	t_tokens	*node;
+
+	node = ft_lstnew(str, ft_strdup(""));
+	if (!node)
+	{
+		free_list(&data->tokens);
+		return (set_exit_code(1, true));
+	}
+	ft_lstadd_back(&data->tokens, node);
+	node->type = set_type(node);
+	return (0);
+}
