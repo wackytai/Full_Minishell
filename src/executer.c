@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 18:31:05 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/01 15:02:29 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/01 16:12:56 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	executer(t_data *data)
 	if (exe_tokens(data, &cmds, n))
 		return (free_cmd_lst(&head));
 	data->tokens = t;
-	if (set_exit_code(1, false) == 1 && *data->pid == -1)
+	if (set_exit_code(1, false) && *data->pid == -1)
 	{
 		free_all(0, data, &head);
 		return (0);
@@ -61,9 +61,9 @@ int	exe_tokens(t_data *data, t_cmd **cmd, int n)
 		if (check)
 			(*cmd)->rd_in = -1;
 		if (data->tokens && data->tokens->type == 6
-			&& !check_builtins(data->tokens, data, cmd))
+			&& !check_builtins(data->tokens, data, cmd, &i))
 			if (forking(data, cmd, ++i, n))
-				return (1);
+				return (set_exit_code(0, false));
 		if (data->tokens)
 			data->tokens = data->tokens->next;
 	}
@@ -109,7 +109,7 @@ int	forking(t_data *data, t_cmd **cmds, int i, int n)
 	}
 	else
 		if (handle_pipeline(data, cmds, i, pipe_fd))
-			return (1);
+			return (set_exit_code(1, true));
 	skip_to_pipe(data);
 	if ((*cmds)->next && data->tokens->next)
 		(*cmds)->next->fd_in = pipe_fd[0];
