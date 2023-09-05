@@ -8,7 +8,8 @@ C_SOURCES = ./src/lst_utils.c ./src/lst_utils2.c ./src/files.c ./src/clean.c \
 			./src/cmd_utils.c ./src/executer.c ./src/executer_utils.c \
 			./src/process_utils.c ./src/signals.c ./src/wildcards_utils.c \
 			./src/wildcards_utils2.c ./src/wildcards_utils3.c ./src/operators.c \
-			./src/subshell.c ./src/builtins.c ./src/builtins_utils.c
+			./src/builtins.c ./src/builtins2.c ./src/builtins_utils.c \
+			./src/subshell.c
 
 CC = @cc
 CFLAGS = -Wall -Werror -Wextra -g -lreadline

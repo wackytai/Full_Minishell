@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 10:16:04 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/01 14:29:22 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/05 14:18:09 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	print_ordered(t_tokens *lst)
 		while (lst)
 		{
 			if (lst->rank == i)
-				printf("%s=%s\n", lst->var, lst->content);
+				printf("declare -x %s=\"%s\"\n", lst->var, lst->content);
 			lst = lst->next;
 		}
 		i++;
