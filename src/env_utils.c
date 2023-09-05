@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 09:49:43 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/08/29 11:06:35 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/05 09:32:52 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,15 +112,15 @@ void	get_rank(t_tokens **lst)
 char	**prep_envp(t_tokens *env)
 {
 	int			i;
+	int			n;
 	char		*temp;
 	char		**envp;
 
 	i = 0;
-	i = ft_lstsize(env);
-	envp = (char **)malloc(sizeof(char *) * (i + 1));
-	envp[i] = 0;
+	n = ft_lstsize(env);
+	envp = (char **)ft_calloc(sizeof(char *), (n + 1));
 	i = -1;
-	while (envp[++i])
+	while (++i < n)
 	{
 		temp = ft_strjoin(env->var, "=");
 		envp[i] = free_joined(temp, env->content);

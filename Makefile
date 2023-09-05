@@ -8,7 +8,7 @@ C_SOURCES = ./src/lst_utils.c ./src/lst_utils2.c ./src/files.c ./src/clean.c \
 			./src/cmd_utils.c ./src/executer.c ./src/executer_utils.c \
 			./src/process_utils.c ./src/signals.c ./src/wildcards_utils.c \
 			./src/wildcards_utils2.c ./src/wildcards_utils3.c ./src/operators.c \
-			./src/subshell.c ./src/builtins.c
+			./src/subshell.c ./src/builtins.c ./src/builtins_utils.c
 
 CC = @cc
 CFLAGS = -Wall -Werror -Wextra -g -lreadline
@@ -16,7 +16,8 @@ CFLAGS = -Wall -Werror -Wextra -g -lreadline
 all:	$(NAME)
 $(NAME):	$(C_SOURCES)
 			@$(MAKE) --no-print-directory -C $(LIBFT_DIR)
-			$(CC) $(CFLAGS) $(^) -o $(@) $(LIBFT) -fsanitize=address,undefined
+			$(CC) $(CFLAGS) $(^) -o $(@) $(LIBFT) 
+#-fsanitize=address,undefined
 
 clean:
 		@rm -f *.o

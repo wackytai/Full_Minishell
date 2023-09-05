@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 09:28:19 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/01 12:57:01 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/05 09:14:59 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@ char	*is_command(char **paths, char *cmd)
 	temp = 0;
 	while (paths[++i])
 	{
+		if (!access(cmd, X_OK))
+		{
+			temp = ft_strdup(cmd);
+			return (temp);
+		}
 		temp = ft_strjoin(paths[i], cmd);
 		if (!access(temp, X_OK))
 			return (temp);
