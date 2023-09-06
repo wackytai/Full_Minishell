@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:27:01 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/05 14:37:14 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/06 16:49:37 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,56 @@ int	ft_echo(t_data *data, t_cmd **cmd, int *i)
 	}
 	if (!flag)
 		printf("\n");
-	update_lsts(data, cmd, i);
+	update_lsts(data, i);
 	set_exit_code(0, true);
 	return (1);
 }
 
 int	ft_unset(t_data *data, t_cmd **cmd, int *i)
 {
-	update_lsts(data, cmd, i);
-	set_exit_code(0, true);
+	int			j;
+	int			exit;
+	int			flag;
+
+	j = 0;
+	exit = 0;
+	flag = 0;
+	if (!(*cmd)->args[1])
+	{
+		set_exit_code(exit, true);
+		return (1);
+	}
+	while ((*cmd)->args[++j])
+	{
+		flag = validate_var_name((*cmd)->args[j]);
+		if (flag && unset_error((*cmd)->args[j]))
+		{
+			exit = 1;
+			continue ;
+		}
+		exit = remove_env_node(&data->env, (*cmd)->args[j]);
+	}
+	i = 0;
+	if (flag)
+		exit = flag;
+	update_lsts(data, i);
+	set_exit_code(exit, true);
 	return (1);
 }
 
 int	ft_export(t_data *data, t_cmd **cmd, int *i)
 {
-	update_lsts(data, cmd, i);
-	set_exit_code(0, true);
+	int	exit;
+
+	exit = 0;
+	printf("size 0: %i\n", ft_lstsize(data->env));
+	if (!(*cmd)->args[1])
+		print_ordered(data->env);
+	else
+		exit = create_export_var(*cmd, &data->env);
+	printf("size 1: %i\n", ft_lstsize(data->env));
+	update_lsts(data, i);
+	set_exit_code(exit, true);
 	return (1);
 }
 
@@ -67,9 +101,8 @@ int	ft_cd(t_data *data, t_cmd **cmd, int *i)
 		perror("minishell");
 	}
 	else
-		exit = 0;
-	update_dirs(data, dir);
-	update_lsts(data, cmd, i);
+		update_dirs(data, dir);
+	update_lsts(data, i);
 	set_exit_code(exit, true);
 	return (1);
 }
@@ -81,12 +114,12 @@ char	*check_path(t_tokens *env, t_cmd *cmd)
 	dir = 0;
 	if (!cmd->args[1] || (cmd->args[1]
 			&& !ft_strcmp(cmd->args[1], "/")))
-		dir = env_var(env, "HOME")->content;
+		dir = get_env_node(env, "HOME")->content;
 	else if (cmd->args[1] && !ft_strcmp(cmd->args[1], "~-"))
-		dir = env_var(env, "OLDPWD")->content;
+		dir = get_env_node(env, "OLDPWD")->content;
 	else if (cmd->args[1] && !ft_strcmp(cmd->args[1], "-"))
 	{
-		dir = env_var(env, "OLDPWD")->content;
+		dir = get_env_node(env, "OLDPWD")->content;
 		printf("%s\n", dir);
 	}
 	else if (cmd->args[2])

@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 09:49:43 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/05 09:32:52 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/06 10:06:18 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	update_env_lst(t_data *data, char **temp)
 {
 	if (!temp[1])
 	{
-		if (ft_lstadd_back(&data->env, ft_lstnew(ft_strdup(""),
+		if (ft_lstadd_back(&data->env, ft_lstnew(0,
 					ft_strdup(temp[0]))))
 		{
 			free_list(&data->env);
@@ -94,6 +94,7 @@ void	get_rank(t_tokens **lst)
 	t_tokens	*head;
 
 	head = *lst;
+	reset_rank(lst);
 	while (*lst)
 	{
 		current = head;

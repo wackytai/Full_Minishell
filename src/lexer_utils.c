@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 10:07:03 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/01 10:46:15 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/06 13:43:41 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 /* This function checks for forbidden sequence of characters */
 int	ft_isforbidden_char(char *str)
 {
-	if (str[0] && str[0] == '\\')
+	if (str[0] && (str[0] == '\\' || str[0] == '`' || str[0] == '['
+			|| str[0] == ']' || str[0] == ';' || str[0] == '#'))
 	{
-		forbidden_print(2, "\\");
+		forbidden_print(2, str);
 		return (set_exit_code(1, true));
 	}
 	if (str[0] && ((str[0] == '(' && str[1] == ')')

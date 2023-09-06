@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 11:09:29 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/01 14:07:45 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/06 13:18:20 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	check_fds(t_cmd *cmds, int pipe[2])
 {
 	if (!cmds->prev)
 	{
-		if (pipe)
+		if (cmds->next)
 			cmds->fd_out = pipe[1];
 		else
 			cmds->fd_out = STDOUT_FILENO;
@@ -75,6 +75,8 @@ int	handle_pipeline(t_data *data, t_cmd **cmds, int i, int pipe_fd[2])
 	if (!data->pid[i])
 	{
 		update_io((*cmds), pipe_fd);
+		if (check_builtins(data, cmds, &i))
+			exit(set_exit_code(0, false));
 		exe_cmd(data, cmds);
 	}
 	if ((*cmds)->fd_in > 2)

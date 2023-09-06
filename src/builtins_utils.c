@@ -6,41 +6,33 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 15:32:27 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/05 10:19:16 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/06 16:45:51 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-unsigned char	ft_atoll(char *str)
+unsigned long long	ft_atoll(char *str)
 {
 	unsigned long long	res;
-	int					s;
 	int					i;
 
 	res = 0;
 	i = 0;
-	s = 1;
 	while (str[i])
 	{
-		if (str[i] == '-' || str[i] == '+')
-			if (str[i++] == '-')
-				s *= -1;
 		while (str[i] > 47 && str[i] < 58)
 		{
 			res = (res * 10) + (str[i] - '0');
 			i++;
 		}
 	}
-	if (((res - 1) > LLONG_MAX && s < 0) || (res > LLONG_MAX && s > 0))
-		res = 2;
-	return ((unsigned char)((long long)res * s));
+	return (res);
 }
 
 int	check_exit_arg(char *str)
 {
 	int		i;
-	char	*temp;
 
 	i = 0;
 	if (str[i] == '-' || str[i] == '+')
@@ -48,12 +40,73 @@ int	check_exit_arg(char *str)
 	while (ft_isdigit(str[i]))
 		i++;
 	if (str[i])
+		return (exit_error(str));
+	return (0);
+}
+
+int	validate_var_name(char *name)
+{
+	int	i;
+	int	exit;
+
+	i = -1;
+	exit = 0;
+	if (name[0] != '_' && !ft_isalpha(name[0]))
 	{
-		temp = ft_strjoin("minishell: exit: ", str);
-		temp = free_joined(temp, ft_strdup(": numeric argument required"));
-		ft_putendl_fd(temp, STDERR_FILENO);
-		free(temp);
+		print_message(2, &name[0], 0);
 		return (1);
 	}
-	return (0);
+	while (name[++i])
+	{
+		if (!ft_isalnum(name[i]) && name[i] != '_')
+		{
+			exit = 1;
+			print_message(2, &name[i], 0);
+			break ;
+		}
+	}
+	return (exit);
+}
+
+int	create_export_var(t_cmd *cmd, t_tokens **env)
+{
+	int			exit;
+	int			i;
+	int			flag;
+	char		**var;
+	t_tokens	*temp;
+
+	var = 0;
+	i = 0;
+	exit = 0;
+	flag = 0;
+	while (cmd->args[++i])
+	{
+		var = get_env_var(cmd->args[i]);
+		temp = get_env_node(*env, var[0]);
+		if (temp && free_var(&temp))
+			temp->content = ft_strdup(var[1]);
+		else
+			flag = export_add_var(env, var);
+		if (flag)
+			exit = 1;
+		free_array(var);
+	}
+	return (exit);
+}
+
+int	export_add_var(t_tokens **env, char **var)
+{
+	int			exit;
+
+	exit = 0;
+	if (validate_var_name(var[0]))
+		exit = 1;
+	else if (!var[1])
+		exit = ft_lstadd_back(env, ft_lstnew(0, ft_strdup(var[0])));
+	else
+		exit = ft_lstadd_back(env, ft_lstnew(ft_strdup(var[1]),
+					ft_strdup(var[0])));
+	get_rank(env);
+	return (exit);
 }

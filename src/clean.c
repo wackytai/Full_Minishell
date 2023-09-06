@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 10:31:04 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/01 13:39:20 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/06 09:34:36 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,9 @@ void	free_list(t_tokens **lst)
 		temp = *lst;
 		*lst = (*lst)->next;
 		temp->next = 0;
+		if (temp->content)
+			free(temp->content);
 		free(temp->var);
-		free(temp->content);
 		free(temp);
 	}
 	return ;

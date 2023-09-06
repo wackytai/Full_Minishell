@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 18:31:05 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/01 16:12:56 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/06 13:05:08 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	executer(t_data *data)
 		return (1);
 	head = cmds;
 	init_pids(data);
-	if (exe_tokens(data, &cmds, n))
+	if (exe_tokens(data, &cmds))
 		return (free_cmd_lst(&head));
 	data->tokens = t;
 	if (set_exit_code(1, false) && *data->pid == -1)
@@ -41,7 +41,7 @@ int	executer(t_data *data)
 	return (0);
 }
 
-int	exe_tokens(t_data *data, t_cmd **cmd, int n)
+int	exe_tokens(t_data *data, t_cmd **cmd)
 {
 	int	i;
 	int	check;
@@ -60,9 +60,8 @@ int	exe_tokens(t_data *data, t_cmd **cmd, int n)
 		jump_tokens(data);
 		if (check)
 			(*cmd)->rd_in = -1;
-		if (data->tokens && data->tokens->type == 6
-			&& !check_builtins(data->tokens, data, cmd, &i))
-			if (forking(data, cmd, ++i, n))
+		if (data->tokens && data->tokens->type == 6)
+			if (forking(data, cmd, ++i))
 				return (set_exit_code(0, false));
 		if (data->tokens)
 			data->tokens = data->tokens->next;
@@ -88,28 +87,15 @@ int	update_cmd_lst(t_tokens *tokens, t_cmd **cmd, int i)
 	return (0);
 }
 
-int	forking(t_data *data, t_cmd **cmds, int i, int n)
+int	forking(t_data *data, t_cmd **cmds, int i)
 {
 	int	pipe_fd[2];
 
-	if (n < 2)
-	{
-		check_fds(*cmds, 0);
-		child_signal_intercepter();
-		data->pid[i] = fork();
-		if (!data->pid[i])
-		{
-			update_io(*cmds, 0);
-			exe_cmd(data, cmds);
-		}
-		if ((*cmds)->fd_in > 2)
-			close((*cmds)->fd_in);
-		if ((*cmds)->fd_out > 2)
-			close((*cmds)->fd_out);
-	}
-	else
-		if (handle_pipeline(data, cmds, i, pipe_fd))
-			return (set_exit_code(1, true));
+	if ((*cmds)->next && pipe(pipe_fd) == -1)
+		return (set_exit_code(1, true));
+	check_fds(*cmds, pipe_fd);
+	if (handle_pipeline(data, cmds, i, pipe_fd))
+		return (set_exit_code(1, true));
 	skip_to_pipe(data);
 	if ((*cmds)->next && data->tokens->next)
 		(*cmds)->next->fd_in = pipe_fd[0];

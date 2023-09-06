@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 10:16:04 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/05 14:18:09 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/06 16:49:14 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,12 @@ void	print_ordered(t_tokens *lst)
 		while (lst)
 		{
 			if (lst->rank == i)
-				printf("declare -x %s=\"%s\"\n", lst->var, lst->content);
+			{
+				if (!lst->content)
+					printf("declare -x %s\n", lst->var);
+				else
+					printf("declare -x %s=\"%s\"\n", lst->var, lst->content);
+			}
 			lst = lst->next;
 		}
 		i++;
@@ -69,6 +74,12 @@ void	print_message(int flag, char *str, int i)
 		temp = free_joined(temp, ft_strdup(str));
 		temp = free_joined(temp, ft_strdup("'"));
 	}
+	else if (flag == 2)
+	{
+		temp = ft_substr(str, 0, 1);
+		temp = free_joined(ft_strdup("export: `"), temp);
+		temp = free_joined(temp, ft_strdup(": not a valid identifier"));
+	}
 	ft_putendl_fd(temp, STDERR_FILENO);
 	if (temp)
 		free(temp);
@@ -82,14 +93,26 @@ void	forbidden_print(int flag, char *str)
 	if (flag == 1)
 	{
 		temp = ft_strjoin("Forbidden sequence of characters detected: '", str);
-		temp = free_joined(temp, "'");
+		temp = free_joined(temp, ft_strdup("'"));
 	}
 	else if (flag == 2)
 	{
-		temp = ft_strjoin("Forbidden character detected: '", str);
-		temp = free_joined(temp, "'");
+		temp = ft_substr(str, 0, 1);
+		temp = free_joined(ft_strdup("Forbidden character detected: '"), temp);
+		temp = free_joined(temp, ft_strdup("'"));
 	}
 	ft_putendl_fd(temp, STDERR_FILENO);
 	if (temp)
 		free(temp);
+}
+
+int	exit_error(char *str)
+{
+	char	*temp;
+
+	temp = ft_strjoin("minishell: exit: ", str);
+	temp = free_joined(temp, ft_strdup(": numeric argument required"));
+	ft_putendl_fd(temp, STDERR_FILENO);
+	free(temp);
+	return (1);
 }
