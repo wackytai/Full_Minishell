@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 14:05:43 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/06 16:46:06 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/07 11:06:06 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ char				*expand_dollar(char *str, int *i, t_tokens *env);
 
 /* executer.c */
 int					executer(t_data *data);
-int					update_cmd_lst(t_tokens *tokens, t_cmd **cmd, int i);
+int					update_cmd_lst(t_tokens *tokens, t_cmd **cmd);
 int					exe_tokens(t_data *data, t_cmd **cmd);
 int					forking(t_data *data, t_cmd **cmds, int i);
 void				skip_to_pipe(t_data *data);
@@ -100,18 +100,21 @@ void				jump_tokens(t_data *data);
 int					check_directory(char *str);
 int					check_exit_code(char *s1, char *s2, int flag);
 
+/* executer_utils2.c */
+int					check_pipes(t_data *data, t_cmd **cmds);
+
 /* builtins.c */
-int					check_builtins(t_data *data, t_cmd	**cmd, int *i);
+int					check_builtins(t_data *data, t_cmd	**cmd);
 int					update_lsts(t_data *data, int *i);
-int					ft_pwd(t_data *data, int *i);
-int					ft_exit(t_data *data, t_cmd **cmd, int *i);
-int					ft_env(t_data *data, int *i);
+int					ft_pwd(void);
+int					ft_exit(t_cmd **cmd);
+int					ft_env(t_data *data);
 
 /* builtins2.c */
-int					ft_echo(t_data *data, t_cmd **cmd, int *i);
-int					ft_unset(t_data *data, t_cmd	**cmd, int *i);
-int					ft_export(t_data *data, t_cmd	**cmd, int *i);
-int					ft_cd(t_data *data, t_cmd	**cmd, int *i);
+int					ft_echo(t_cmd **cmd);
+int					ft_unset(t_data *data, t_cmd	**cmd);
+int					ft_export(t_data *data, t_cmd	**cmd);
+int					ft_cd(t_data *data, t_cmd	**cmd);
 char				*check_path(t_tokens *env, t_cmd *cmd);
 
 /* builtins_utils.c */
@@ -125,6 +128,7 @@ int					export_add_var(t_tokens **env, char **var);
 int					free_var(t_tokens **lst);
 unsigned char		check_number(char *str);
 int					unset_error(char *str);
+int					unset_var(t_data *data, t_cmd *cmd);
 
 /* operators.c */
 int					check_operators(t_tokens *token);

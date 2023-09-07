@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 11:34:52 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/06 16:05:57 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/07 11:09:49 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,28 @@ int	unset_error(char *str)
 	temp = free_joined(ft_strdup("unset: `"), temp);
 	temp = free_joined(temp, ft_strdup(": not a valid identifier"));
 	return (1);
+}
+
+int	unset_var(t_data *data, t_cmd *cmd)
+{
+	int	i;
+	int	flag;
+	int	exit;
+
+	i = 0;
+	flag = 0;
+	exit = 0;
+	while (cmd->args[++i])
+	{
+		flag = validate_var_name(cmd->args[i]);
+		if (flag && unset_error(cmd->args[i]))
+		{
+			exit = 1;
+			continue ;
+		}
+		exit = remove_env_node(&data->env, cmd->args[i]);
+	}
+	if (flag)
+		exit = flag;
+	return (exit);
 }

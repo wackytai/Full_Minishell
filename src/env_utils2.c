@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 10:29:15 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/06 16:21:04 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/07 10:52:33 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,18 @@ void	reset_rank(t_tokens **lst)
 int	remove_env_node(t_tokens **env, char *name)
 {
 	t_tokens	*temp;
+	t_tokens	*next_node;
+	t_tokens	*prev_node;
 
 	temp = get_env_node(*env, name);
+	next_node = temp->next;
+	prev_node = temp->prev;
 	if (temp)
 	{
-		temp->prev->next = temp->next;
-		temp->next->prev = temp->prev;
+		if (temp->prev)
+			temp->prev->next = next_node;
+		if (temp->next)
+			temp->next->prev = prev_node;
 		if (temp->content)
 			free(temp->content);
 		free(temp->var);

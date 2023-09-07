@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 18:31:05 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/06 13:05:08 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/07 10:42:27 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int	executer(t_data *data)
 {
 	int			i;
-	int			n;
 	t_tokens	*t;
 	t_cmd		*cmds;
 	t_cmd		*head;
@@ -23,10 +22,11 @@ int	executer(t_data *data)
 	i = -1;
 	cmds = 0;
 	t = data->tokens;
-	n = count_lst_type(data->tokens, 2) + 1;
-	if (update_cmd_lst(data->tokens, &cmds, n))
+	if (update_cmd_lst(data->tokens, &cmds))
 		return (1);
 	head = cmds;
+	if (check_pipes(data, &cmds))
+		return (set_exit_code(0, false));
 	init_pids(data);
 	if (exe_tokens(data, &cmds))
 		return (free_cmd_lst(&head));
@@ -69,8 +69,11 @@ int	exe_tokens(t_data *data, t_cmd **cmd)
 	return (0);
 }
 
-int	update_cmd_lst(t_tokens *tokens, t_cmd **cmd, int i)
+int	update_cmd_lst(t_tokens *tokens, t_cmd **cmd)
 {
+	int	i;
+
+	i = count_lst_type(tokens, 2) + 1;
 	while (--i > -1)
 	{
 		if (!tokens->content[0])
