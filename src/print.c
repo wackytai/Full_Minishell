@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 10:16:04 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/06 16:49:14 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/07 11:21:44 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,6 @@ void	print_message(int flag, char *str, int i)
 				ft_strdup(" delimited by end-of-file (wanted `"));
 		temp = free_joined(temp, ft_strdup(str));
 		temp = free_joined(temp, ft_strdup("'"));
-	}
-	else if (flag == 2)
-	{
-		temp = ft_substr(str, 0, 1);
-		temp = free_joined(ft_strdup("export: `"), temp);
-		temp = free_joined(temp, ft_strdup(": not a valid identifier"));
 	}
 	ft_putendl_fd(temp, STDERR_FILENO);
 	if (temp)

@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 14:05:43 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/07 11:06:06 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/07 11:25:09 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,14 +120,14 @@ char				*check_path(t_tokens *env, t_cmd *cmd);
 /* builtins_utils.c */
 unsigned long long	ft_atoll(char *str);
 int					check_exit_arg(char *str);
-int					validate_var_name(char *name);
+int					validate_var_name(char *name, char *cmd);
 int					create_export_var(t_cmd *cmd, t_tokens **env);
 int					export_add_var(t_tokens **env, char **var);
 
 /* builtins_utils2.c */
 int					free_var(t_tokens **lst);
 unsigned char		check_number(char *str);
-int					unset_error(char *str);
+int					print_error(char *str, char *s1);
 int					unset_var(t_data *data, t_cmd *cmd);
 
 /* operators.c */

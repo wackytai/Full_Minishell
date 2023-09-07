@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 15:32:27 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/06 16:45:51 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/07 11:26:17 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	check_exit_arg(char *str)
 	return (0);
 }
 
-int	validate_var_name(char *name)
+int	validate_var_name(char *name, char *cmd)
 {
 	int	i;
 	int	exit;
@@ -53,7 +53,7 @@ int	validate_var_name(char *name)
 	exit = 0;
 	if (name[0] != '_' && !ft_isalpha(name[0]))
 	{
-		print_message(2, &name[0], 0);
+		print_error(&name[0], cmd);
 		return (1);
 	}
 	while (name[++i])
@@ -61,7 +61,7 @@ int	validate_var_name(char *name)
 		if (!ft_isalnum(name[i]) && name[i] != '_')
 		{
 			exit = 1;
-			print_message(2, &name[i], 0);
+			print_error(&name[i], cmd);
 			break ;
 		}
 	}
@@ -100,7 +100,7 @@ int	export_add_var(t_tokens **env, char **var)
 	int			exit;
 
 	exit = 0;
-	if (validate_var_name(var[0]))
+	if (validate_var_name(var[0], "export"))
 		exit = 1;
 	else if (!var[1])
 		exit = ft_lstadd_back(env, ft_lstnew(0, ft_strdup(var[0])));

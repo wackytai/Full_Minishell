@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 11:34:52 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/07 11:09:49 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/07 11:24:44 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,16 @@ unsigned char	check_number(char *str)
 	return ((unsigned char)((long long)(n * s)));
 }
 
-int	unset_error(char *str)
+int	print_error(char *str, char *s1)
 {
 	char	*temp;
 
 	temp = 0;
 	temp = ft_substr(str, 0, 1);
-	temp = free_joined(ft_strdup("unset: `"), temp);
+	temp = free_joined(ft_strjoin(s1, ": `"), temp);
 	temp = free_joined(temp, ft_strdup(": not a valid identifier"));
+	ft_putendl_fd(temp, STDERR_FILENO);
+	free(temp);
 	return (1);
 }
 
@@ -61,8 +63,8 @@ int	unset_var(t_data *data, t_cmd *cmd)
 	exit = 0;
 	while (cmd->args[++i])
 	{
-		flag = validate_var_name(cmd->args[i]);
-		if (flag && unset_error(cmd->args[i]))
+		flag = validate_var_name(cmd->args[i], cmd->args[0]);
+		if (flag)
 		{
 			exit = 1;
 			continue ;
