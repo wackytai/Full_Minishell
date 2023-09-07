@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 09:49:43 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/06 10:06:18 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/07 14:45:46 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,22 +62,21 @@ int	update_env_lst(t_data *data, char **temp)
 }
 
 /* Function to add paths to data structure */
-char	**get_paths(char **envp, char **paths)
+char	**get_paths(t_tokens *envp, char **paths)
 {
-	char	**data_path;
-	char	*temp;
-	int		i;
+	t_tokens	*head;
+	char		**data_path;
+	char		*temp;
+	int			i;
 
+	head = envp;
 	i = -1;
 	if (paths)
 		free_array(paths);
-	while (envp[++i])
-	{
-		if (!ft_strncmp(envp[i], "PATH", 4))
-			break ;
-	}
-	data_path = ft_split(envp[i] + 5, ':');
-	i = -1;
+	head = get_env_node(envp, "PATH");
+	if (!head)
+		return (NULL);
+	data_path = ft_split(head->content, ':');
 	while (data_path[++i])
 	{
 		temp = data_path[i];

@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 14:05:43 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/07 11:25:09 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/07 15:18:55 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void				skip_to_pipe(t_data *data);
 int					exe_cmd(t_data *data, t_cmd **cmd);
 int					get_cmd_lst(t_tokens *t, t_cmd **cmds);
 void				jump_tokens(t_data *data);
-int					check_directory(char *str);
+int					check_directory(char *str, int flag);
 int					check_exit_code(char *s1, char *s2, int flag);
 
 /* executer_utils2.c */
@@ -106,15 +106,15 @@ int					check_pipes(t_data *data, t_cmd **cmds);
 /* builtins.c */
 int					check_builtins(t_data *data, t_cmd	**cmd);
 int					update_lsts(t_data *data, int *i);
-int					ft_pwd(void);
+int					ft_pwd(int out);
 int					ft_exit(t_cmd **cmd);
-int					ft_env(t_data *data);
+int					ft_env(t_data *data, int out);
 
 /* builtins2.c */
-int					ft_echo(t_cmd **cmd);
-int					ft_unset(t_data *data, t_cmd	**cmd);
-int					ft_export(t_data *data, t_cmd	**cmd);
-int					ft_cd(t_data *data, t_cmd	**cmd);
+int					ft_echo(t_cmd **cmd, int out);
+int					ft_unset(t_data *data, t_cmd **cmd);
+int					ft_export(t_data *data, t_cmd **cmd, int out);
+int					ft_cd(t_data *data, t_cmd **cmd);
 char				*check_path(t_tokens *env, t_cmd *cmd);
 
 /* builtins_utils.c */
@@ -123,6 +123,7 @@ int					check_exit_arg(char *str);
 int					validate_var_name(char *name, char *cmd);
 int					create_export_var(t_cmd *cmd, t_tokens **env);
 int					export_add_var(t_tokens **env, char **var);
+int					ft_isbuiltin(char *token);
 
 /* builtins_utils2.c */
 int					free_var(t_tokens **lst);
@@ -180,7 +181,7 @@ int					set_exit_code(int i, bool flag);
 
 /* env_utils.c */
 void				get_env(char **env, t_data *data);
-char				**get_paths(char **envp, char **paths);
+char				**get_paths(t_tokens *env, char **paths);
 int					update_env_lst(t_data *data, char **temp);
 void				get_rank(t_tokens **lst);
 char				**prep_envp(t_tokens *env);
@@ -207,8 +208,8 @@ void				cmd_add_back(t_cmd	**lst, t_cmd *node);
 t_tokens			*ft_lst_first(t_tokens *lst);
 
 /* print.c */
-void				print_lst(t_tokens *lst);
-void				print_ordered(t_tokens *lst);
+void				print_exp_var(int flag, int out, t_tokens *node);
+void				print_ordered(t_tokens *lst, int out);
 void				print_message(int flag, char *str, int i);
 void				forbidden_print(int flag, char *str);
 int					exit_error(char *str);

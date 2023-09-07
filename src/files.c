@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 11:12:32 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/08/31 14:54:56 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/07 15:58:34 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ int	check_files(t_tokens *t, t_cmd *cmd)
 		{
 			if (!ft_strcmp(t->content, "<<") || !ft_strcmp(t->content, "<"))
 				check_infile(t, cmd, cmd->rd_in);
-			if (cmd->rd_in < 0)
-				break ;
 			if (cmd->rd_in == -2)
 				return (1);
+			if (cmd->rd_in < 0)
+				break ;
 			if (!ft_strcmp(t->content, ">") || !ft_strcmp(t->content, ">>"))
 				if (check_outfile(t, cmd) < 0)
 					break ;
@@ -40,7 +40,6 @@ int	check_files(t_tokens *t, t_cmd *cmd)
 int	check_outfile(t_tokens *t, t_cmd *cmd)
 {
 	static int	out;
-	char		*str;
 
 	out = 0;
 	if (out)
@@ -53,14 +52,9 @@ int	check_outfile(t_tokens *t, t_cmd *cmd)
 	if (out < 0)
 	{
 		if (access(t->next->content, F_OK))
-		{
-			str = free_joined(ft_strjoin("minishell: ", t->next->content),
-					": Permission denied");
-			ft_putendl_fd(str, STDERR_FILENO);
-			free(str);
-		}
+			check_exit_code(t->next->content, ": Permission denied", 126);
 		else
-			perror("minishell");
+			perror(" ");
 	}
 	return (out);
 }
@@ -75,13 +69,13 @@ int	check_infile(t_tokens *t, t_cmd *cmd, int in)
 		{
 			cmd->rd_in = -1;
 			set_exit_code(1, true);
-			perror("minishell");
+			check_exit_code(t->next->content, ": No such file or directory", 1);
 		}
 		else if (access(t->next->content, R_OK))
 		{
 			cmd->rd_in = -1;
 			set_exit_code(126, true);
-			perror("minishell");
+			check_exit_code(t->next->content, ": Permission denied", 126);
 		}
 		else
 			cmd->rd_in = open(t->next->content, O_RDONLY);
@@ -145,5 +139,5 @@ int	here_doc(char *limiter, int fd)
 	close(fd);
 	if (line)
 		free(line);
-	exit (0);
+	exit (set_exit_code(0, true));
 }

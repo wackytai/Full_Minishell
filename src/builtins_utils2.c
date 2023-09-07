@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 11:34:52 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/07 11:24:44 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/07 15:29:22 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ int	unset_var(t_data *data, t_cmd *cmd)
 	while (cmd->args[++i])
 	{
 		flag = validate_var_name(cmd->args[i], cmd->args[0]);
+		if (exit)
+			flag = 1;
 		if (flag)
 		{
 			exit = 1;
@@ -74,4 +76,14 @@ int	unset_var(t_data *data, t_cmd *cmd)
 	if (flag)
 		exit = flag;
 	return (exit);
+}
+
+int	ft_isbuiltin(char *token)
+{
+	if (!ft_strcmp(token, "pwd") || !ft_strcmp(token, "cd")
+		|| !ft_strcmp(token, "export") || !ft_strcmp(token, "echo")
+		|| !ft_strcmp(token, "unset") || !ft_strcmp(token, "env")
+		|| !ft_strcmp(token, "exit"))
+		return (1);
+	return (0);
 }

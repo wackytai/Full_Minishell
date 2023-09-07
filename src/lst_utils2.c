@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 11:07:39 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/01 14:23:58 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/07 15:04:59 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,10 @@ t_cmd	*ft_cmdnew(char **cmds)
 
 	new = malloc(sizeof(t_cmd));
 	if (!new)
+	{
+		set_exit_code(1, true);
 		return (0);
+	}
 	new->next = NULL;
 	new->prev = NULL;
 	new->cmd_path = 0;
@@ -55,7 +58,10 @@ t_cmd	*ft_cmdnew(char **cmds)
 t_cmd	*cmd_last(t_cmd *lst)
 {
 	if (!lst)
+	{
+		set_exit_code(1, true);
 		return (0);
+	}
 	while (lst->next)
 		lst = lst->next;
 	return (lst);

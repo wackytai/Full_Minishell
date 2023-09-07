@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 14:32:02 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/07 10:48:20 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/07 14:19:22 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,26 @@
 
 int	check_builtins(t_data *data, t_cmd	**cmd)
 {
+	int	out;
+
+	out = STDOUT_FILENO;
+	if (!(*cmd)->next && !(*cmd)->prev)
+		out = (*cmd)->fd_out;
 	if (!ft_strcmp(data->tokens->content, "pwd"))
-		return (ft_pwd());
+		return (ft_pwd(out));
 	else if (!ft_strcmp(data->tokens->content, "cd"))
 		return (ft_cd(data, cmd));
 	else if (!ft_strcmp(data->tokens->content, "export"))
-		return (ft_export(data, cmd));
+		return (ft_export(data, cmd, out));
 	else if (!ft_strcmp(data->tokens->content, "echo"))
-		return (ft_echo(cmd));
+		return (ft_echo(cmd, out));
 	else if (!ft_strcmp(data->tokens->content, "unset"))
 		return (ft_unset(data, cmd));
 	else if (!ft_strcmp(data->tokens->content, "env"))
-		return (ft_env(data));
+		return (ft_env(data, out));
 	else if (!ft_strcmp(data->tokens->content, "exit"))
 	{
-		ft_putendl_fd("exit", (*cmd)->fd_out);
+		ft_putendl_fd("exit", out);
 		ft_exit(cmd);
 		return (1);
 	}
@@ -42,7 +47,7 @@ int	update_lsts(t_data *data, int *i)
 	return (1);
 }
 
-int	ft_pwd(void)
+int	ft_pwd(int out)
 {
 	char	*temp;
 
@@ -53,7 +58,7 @@ int	ft_pwd(void)
 		set_exit_code(1, true);
 		return (0);
 	}
-	ft_putendl_fd(temp, STDOUT_FILENO);
+	ft_putendl_fd(temp, out);
 	free(temp);
 	set_exit_code(0, true);
 	return (1);
@@ -82,7 +87,7 @@ int	ft_exit(t_cmd **cmd)
 	exit (set_exit_code(n, true));
 }
 
-int	ft_env(t_data *data)
+int	ft_env(t_data *data, int out)
 {
 	t_tokens	*envp;
 
@@ -90,7 +95,11 @@ int	ft_env(t_data *data)
 	while (envp)
 	{
 		if (envp->content)
-			printf("%s=%s\n", envp->var, envp->content);
+		{
+			ft_putstr_fd(envp->var, out);
+			ft_putstr_fd("=", out);
+			ft_putendl_fd(envp->content, out);
+		}
 		envp = envp->next;
 	}
 	set_exit_code(0, true);

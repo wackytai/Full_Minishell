@@ -6,31 +6,36 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:27:01 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/07 11:09:43 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/07 15:58:44 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int	ft_echo(t_cmd **cmd)
+int	ft_echo(t_cmd **cmd, int out)
 {
 	int	j;
 	int	flag;
 
 	j = 0;
 	flag = 0;
-	if (!(*cmd)->args[1] && printf("\n") && !set_exit_code(0, true))
+	if ((*cmd)->fd_in < 0)
+		return (set_exit_code(1, true));
+	if (!(*cmd)->args[1] && !set_exit_code(0, true))
+	{
+		ft_putstr_fd("\n", (*cmd)->fd_out);
 		return (1);
+	}
 	while ((*cmd)->args[++j] && !ft_strcmp((*cmd)->args[j], "-n"))
 		flag = 1;
 	while ((*cmd)->args[j])
 	{
-		printf("%s", (*cmd)->args[j++]);
+		ft_putstr_fd((*cmd)->args[j++], out);
 		if ((*cmd)->args[j])
-			printf(" ");
+			ft_putstr_fd(" ", out);
 	}
 	if (!flag)
-		printf("\n");
+		ft_putstr_fd("\n", out);
 	set_exit_code(0, true);
 	return (1);
 }
@@ -52,13 +57,13 @@ int	ft_unset(t_data *data, t_cmd **cmd)
 	return (1);
 }
 
-int	ft_export(t_data *data, t_cmd **cmd)
+int	ft_export(t_data *data, t_cmd **cmd, int out)
 {
 	int	exit;
 
 	exit = 0;
 	if (!(*cmd)->args[1])
-		print_ordered(data->env);
+		print_ordered(data->env, out);
 	else
 		exit = create_export_var(*cmd, &data->env);
 	set_exit_code(exit, true);
@@ -79,7 +84,7 @@ int	ft_cd(t_data *data, t_cmd **cmd)
 	{
 		dir = 0;
 		exit = 1;
-		perror("minishell");
+		perror("");
 	}
 	else
 		update_dirs(data, dir);
@@ -100,7 +105,7 @@ char	*check_path(t_tokens *env, t_cmd *cmd)
 	else if (cmd->args[1] && !ft_strcmp(cmd->args[1], "-"))
 	{
 		dir = get_env_node(env, "OLDPWD")->content;
-		printf("%s\n", dir);
+		ft_putendl_fd(dir, cmd->fd_out);
 	}
 	else if (cmd->args[2])
 	{

@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 13:21:12 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/08/17 12:05:19 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/07 15:04:15 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ t_tokens	*ft_lstnew(char *content, char *var_name)
 
 	new = malloc(sizeof(t_tokens));
 	if (!new)
+	{
+		set_exit_code(1, true);
 		return (0);
+	}
 	new->content = content;
 	new->type = -1;
 	new->rank = 0;
@@ -33,7 +36,10 @@ t_tokens	*ft_lstnew(char *content, char *var_name)
 t_tokens	*ft_lstlast(t_tokens *lst)
 {
 	if (!lst)
+	{
+		set_exit_code(1, true);
 		return (0);
+	}
 	while (lst->next != NULL)
 	{
 		lst = lst->next;
@@ -48,7 +54,10 @@ int	ft_lstsize(t_tokens *lst)
 
 	i = 0;
 	if (!lst)
+	{
+		set_exit_code(1, true);
 		return (0);
+	}
 	while (lst)
 	{
 		i++;
@@ -75,7 +84,7 @@ int	ft_lstadd_back(t_tokens **lst, t_tokens *node)
 	t_tokens	*temp;
 
 	if (!node)
-		return (1);
+		return (set_exit_code(1, true));
 	if (!*lst)
 	{
 		*lst = node;

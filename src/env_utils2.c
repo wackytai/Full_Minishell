@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 10:29:15 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/07 10:52:33 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/07 14:23:07 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,19 +82,18 @@ int	remove_env_node(t_tokens **env, char *name)
 	t_tokens	*prev_node;
 
 	temp = get_env_node(*env, name);
+	if (!temp)
+		return (set_exit_code(0, true));
 	next_node = temp->next;
 	prev_node = temp->prev;
-	if (temp)
-	{
-		if (temp->prev)
-			temp->prev->next = next_node;
-		if (temp->next)
-			temp->next->prev = prev_node;
-		if (temp->content)
-			free(temp->content);
-		free(temp->var);
-		free(temp);
-		get_rank(env);
-	}
+	if (temp->prev)
+		temp->prev->next = next_node;
+	if (temp->next)
+		temp->next->prev = prev_node;
+	if (temp->content)
+		free(temp->content);
+	free(temp->var);
+	free(temp);
+	get_rank(env);
 	return (set_exit_code(0, true));
 }

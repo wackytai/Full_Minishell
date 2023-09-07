@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 18:31:05 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/07 10:42:27 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/07 13:23:06 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,18 @@ int	update_cmd_lst(t_tokens *tokens, t_cmd **cmd)
 		if (!tokens->content[0])
 			tokens = tokens->next;
 		if (tokens && get_cmd_lst(tokens, cmd))
-			return (1);
+			return (set_exit_code(1, true));
 		while (tokens)
 		{
 			tokens = tokens->next;
 			if (!tokens || (tokens && tokens->prev->type == 2))
 				break ;
 		}
+	}
+	if (!(*cmd))
+	{
+		set_exit_code(0, true);
+		return (1);
 	}
 	return (0);
 }

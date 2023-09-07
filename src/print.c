@@ -6,29 +6,29 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 10:16:04 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/07 11:21:44 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/07 15:24:15 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-/* Simple function to print the token list */
-void	print_lst(t_tokens *lst)
+void	print_exp_var(int flag, int out, t_tokens *node)
 {
-	int		i;
+	char	*temp;
 
-	i = 0;
-	while (lst)
+	temp = ft_strjoin("declare -x ", node->var);
+	if (flag)
 	{
-		printf(" token: %s\n", lst->content);
-		i++;
-		lst = lst->next;
+		temp = free_joined(temp, ft_strdup("=\""));
+		temp = free_joined(temp, ft_strdup(node->content));
+		temp = free_joined(temp, ft_strdup("\""));
 	}
-	return ;
+	ft_putendl_fd(temp, out);
+	free(temp);
 }
 
 /* Function to print environment variables in alphabetical order */
-void	print_ordered(t_tokens *lst)
+void	print_ordered(t_tokens *lst, int out)
 {
 	int			i;
 	int			size;
@@ -45,9 +45,9 @@ void	print_ordered(t_tokens *lst)
 			if (lst->rank == i)
 			{
 				if (!lst->content)
-					printf("declare -x %s\n", lst->var);
+					print_exp_var(0, out, lst);
 				else
-					printf("declare -x %s=\"%s\"\n", lst->var, lst->content);
+					print_exp_var(1, out, lst);
 			}
 			lst = lst->next;
 		}
@@ -104,7 +104,7 @@ int	exit_error(char *str)
 {
 	char	*temp;
 
-	temp = ft_strjoin("minishell: exit: ", str);
+	temp = ft_strjoin("exit: ", str);
 	temp = free_joined(temp, ft_strdup(": numeric argument required"));
 	ft_putendl_fd(temp, STDERR_FILENO);
 	free(temp);

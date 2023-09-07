@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 09:36:30 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/01 14:22:49 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/07 15:02:41 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,11 @@ int	check_wildcards(t_tokens **t)
 		return (0);
 	dirp = opendir(".");
 	if (!dirp)
-		printf("set exit code\n");
+		return (set_exit_code(1, true));
 	if (find_wildcard(dirp, t) && !closedir(dirp))
-		return (1);
+		return (set_exit_code(1, true));
 	if (closedir(dirp))
-		printf("set exit code\n");
+		return (set_exit_code(1, true));
 	return (0);
 }
 

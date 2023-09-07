@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 14:10:11 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/05 09:38:02 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/07 14:34:43 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	main(int argc, char **argv, char **envp)
 	signal_intercepter();
 	while (1)
 	{
-		data.path = get_paths(envp, data.path);
+		data.path = get_paths(data.env, data.path);
 		temp = readline("minishell$ ");
 		if (!temp && printf("exit\n"))
 			break ;

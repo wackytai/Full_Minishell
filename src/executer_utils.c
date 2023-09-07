@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 09:10:32 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/01 14:12:35 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/07 15:35:47 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,18 @@ int	exe_cmd(t_data *data, t_cmd **c)
 	int			exit_code;
 
 	exit_code = 0;
-	if (!check_directory((*c)->args[0]))
+	if (!check_directory((*c)->args[0], 0))
 		exit_code = check_exit_code((*c)->args[0], ": Is a directory", 126);
-	else if (((*c)->args[0][0] == '.' || (*c)->args[0][0] == '/'
-			|| !ft_strncmp((*c)->args[0], "./", 2))
-		&& access((*c)->args[0], F_OK))
+	else if ((((*c)->args[0][0] == '.' || (*c)->args[0][0] == '/'
+		|| !ft_strncmp((*c)->args[0], "./", 2))
+		&& access((*c)->args[0], F_OK)))
 		exit_code = check_exit_code((*c)->args[0],
 				": No such file or directory", 127);
 	else if (((*c)->args[0][0] == '.' || !ft_strncmp((*c)->args[0], "./", 2))
 		&& access((*c)->args[0], X_OK))
 		exit_code = check_exit_code((*c)->args[0], ": Permission denied", 126);
 	else if (check_cmd(data->path, c))
-		exit_code = check_exit_code((*c)->args[0], ": command not found", 127);
+		exit_code = 127;
 	if (exit_code)
 		exit(exit_code);
 	envp = prep_envp(data->env);
@@ -59,11 +59,11 @@ void	jump_tokens(t_data *data)
 		data->tokens = data->tokens->next;
 }
 
-int	check_directory(char *str)
+int	check_directory(char *str, int flag)
 {
 	DIR	*dirp;
 
-	if (str[0] == '.' || (!ft_strncmp(str, "./", 2) || str[0] == '/'))
+	if (flag || str[0] == '.' || (!ft_strncmp(str, "./", 2) || str[0] == '/'))
 	{
 		dirp = opendir(str);
 		if (!dirp)
