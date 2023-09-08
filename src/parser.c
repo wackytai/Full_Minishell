@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 11:36:32 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/01 14:23:36 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/08 11:01:01 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ char	*ft_expansion(char *str, char c, t_tokens *env)
 	char	*s;
 
 	j = 0;
+	if (!ft_strcmp(str, "$"))
+		return (str);
 	s = ft_strdup("");
 	while (str[j])
 	{

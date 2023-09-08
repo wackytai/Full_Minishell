@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 14:10:11 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/08 10:23:41 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/08 11:33:26 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ int	get_tokens(t_data *data, char *str)
 			return (1);
 		token = ft_substr(str, i, j);
 		i += j;
-		create_tokens(data, token);
+		if (create_tokens(data, token) && free_str(str))
+			return (1);
 	}
 	free(str);
 	parser(data);
@@ -89,5 +90,10 @@ int	create_tokens(t_data *data, char *str)
 	}
 	ft_lstadd_back(&data->tokens, node);
 	node->type = set_type(node);
+	if (node->prev && node->prev->type < 2 && node->content[0] == '$')
+	{
+		check_exit_code(node->content, ": ambiguous redirect", 1);
+		return (set_exit_code(1, true));
+	}
 	return (0);
 }

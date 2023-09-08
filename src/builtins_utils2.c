@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 11:34:52 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/08 10:28:41 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/08 12:43:43 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,8 @@ int	print_error(char *str, char *s1)
 	char	*temp;
 
 	temp = 0;
-	temp = ft_substr(str, 0, 1);
-	temp = free_joined(ft_strjoin(s1, ": `"), temp);
-	temp = free_joined(temp, ft_strdup(": not a valid identifier"));
+	temp = free_joined(ft_strjoin(s1, ": `"), ft_strdup(str));
+	temp = free_joined(temp, ft_strdup("': not a valid identifier"));
 	ft_putendl_fd(temp, STDERR_FILENO);
 	free(temp);
 	return (1);
@@ -80,6 +79,8 @@ int	unset_var(t_data *data, t_cmd *cmd)
 
 int	ft_isbuiltin(char *token)
 {
+	if (!token)
+		return (0);
 	if (!ft_strcmp(token, "pwd") || !ft_strcmp(token, "cd")
 		|| !ft_strcmp(token, "export") || !ft_strcmp(token, "echo")
 		|| !ft_strcmp(token, "unset") || !ft_strcmp(token, "env")

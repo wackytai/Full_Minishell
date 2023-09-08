@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:27:01 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/08 10:45:31 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/08 12:02:37 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int	ft_export(t_data *data, t_cmd **cmd, int out)
 int	ft_cd(t_data *data, t_cmd **cmd)
 {
 	char		*dir;
+	char		*temp;
 	int			exit;
 
 	dir = 0;
@@ -84,7 +85,9 @@ int	ft_cd(t_data *data, t_cmd **cmd)
 	{
 		dir = 0;
 		exit = 1;
-		perror(" ");
+		temp = ft_strjoin("cd: ", (*cmd)->args[1]);
+		perror(temp);
+		free(temp);
 	}
 	else
 		update_dirs(data, dir);
@@ -98,7 +101,8 @@ char	*check_path(t_tokens *env, t_cmd *cmd)
 
 	dir = 0;
 	if (!cmd->args[1] || (cmd->args[1]
-			&& !ft_strcmp(cmd->args[1], "/")))
+			&& (!ft_strcmp(cmd->args[1], "/")
+				|| !ft_strcmp(cmd->args[1], "~"))))
 		dir = get_env_node(env, "HOME")->content;
 	else if (cmd->args[1] && !ft_strcmp(cmd->args[1], "~-"))
 		dir = get_env_node(env, "OLDPWD")->content;
@@ -109,7 +113,7 @@ char	*check_path(t_tokens *env, t_cmd *cmd)
 	}
 	else if (cmd->args[2])
 	{
-		ft_putendl_fd("minishell: cd: too many arguments", STDERR_FILENO);
+		ft_putendl_fd("cd: too many arguments", STDERR_FILENO);
 		set_exit_code(1, true);
 	}
 	else

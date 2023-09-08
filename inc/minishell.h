@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 14:05:43 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/07 15:18:55 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/08 11:33:49 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,5 +220,8 @@ void				free_array(char **array);
 void				free_list(t_tokens **lst);
 char				*free_joined(char *s1, char *s2);
 int					free_cmd_lst(t_cmd **lst);
+
+/* clean2.c */
+int					free_str(char *str);
 
 #endif
