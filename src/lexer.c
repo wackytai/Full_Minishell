@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 14:10:11 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/07 14:34:43 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/08 10:23:41 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int	main(int argc, char **argv, char **envp)
 			break ;
 		add_history(temp);
 		get_tokens(&data, temp);
-		free(temp);
 		free_list(&data.tokens);
 		free(data.pid);
 		data.pid = 0;
@@ -72,6 +71,7 @@ int	get_tokens(t_data *data, char *str)
 		i += j;
 		create_tokens(data, token);
 	}
+	free(str);
 	parser(data);
 	return (0);
 }

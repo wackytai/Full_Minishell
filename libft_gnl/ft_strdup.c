@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 11:09:17 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/06 09:52:57 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/08 10:08:08 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ char	*ft_strdup(const char *s)
 
 	i = 0;
 	len = 0;
+	if (!s)
+		return (0);
 	while (s[len] != '\0')
 	{
 		len++;

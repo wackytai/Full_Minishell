@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 11:27:01 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/07 15:58:44 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/08 10:45:31 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	ft_cd(t_data *data, t_cmd **cmd)
 	{
 		dir = 0;
 		exit = 1;
-		perror("");
+		perror(" ");
 	}
 	else
 		update_dirs(data, dir);
