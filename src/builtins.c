@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 14:32:02 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/08 11:46:45 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/11 09:52:08 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	ft_exit(t_cmd **cmd)
 	{
 		if ((*cmd)->args[2] && !check_exit_arg((*cmd)->args[1]))
 		{
-			ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);
+			ft_putendl_fd("exit: too many arguments", STDERR_FILENO);
 			return (set_exit_code(1, true));
 		}
 		if (check_exit_arg((*cmd)->args[1]))

@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 14:10:11 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/08 11:33:26 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/11 10:13:28 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	main(int argc, char **argv, char **envp)
 		if (!temp && printf("exit\n"))
 			break ;
 		add_history(temp);
-		get_tokens(&data, temp);
+		lexer(&data, temp);
 		free_list(&data.tokens);
 		free(data.pid);
 		data.pid = 0;
@@ -48,7 +48,7 @@ void	init_data(t_data *data, char **env)
 }
 
 /* This functions breaks the input into tokens according to grammar */
-int	get_tokens(t_data *data, char *str)
+int	lexer(t_data *data, char *str)
 {
 	int		i;
 	int		j;
@@ -63,14 +63,14 @@ int	get_tokens(t_data *data, char *str)
 		if (!str[i])
 			break ;
 		if (ft_isforbidden_char(&str[i]))
-			return (1);
+			return (free_str(str));
 		j = token_len(&str[i]);
 		if (!j)
-			return (1);
+			return (free_str(str));
 		token = ft_substr(str, i, j);
 		i += j;
-		if (create_tokens(data, token) && free_str(str))
-			return (1);
+		if (create_tokens(data, token))
+			return (free_str(str));
 	}
 	free(str);
 	parser(data);

@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 11:34:52 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/08 12:43:43 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/11 10:03:05 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,19 @@ unsigned char	check_number(char *str)
 	return ((unsigned char)((long long)(n * s)));
 }
 
-int	print_error(char *str, char *s1)
+int	print_error(char *str, char *s1, char *s2)
 {
 	char	*temp;
+	int		i;
 
 	temp = 0;
-	temp = free_joined(ft_strjoin(s1, ": `"), ft_strdup(str));
+	i = 0;
+	while (s2[i] && s2[i] != '=')
+		i++;
+	if (s2[i] && s2[i] == '=')
+		temp = free_joined(ft_strjoin(s1, ": `"), ft_strdup(&s2[i]));
+	else
+		temp = free_joined(ft_strjoin(s1, ": `"), ft_strdup(str));
 	temp = free_joined(temp, ft_strdup("': not a valid identifier"));
 	ft_putendl_fd(temp, STDERR_FILENO);
 	free(temp);
@@ -62,7 +69,7 @@ int	unset_var(t_data *data, t_cmd *cmd)
 	exit = 0;
 	while (cmd->args[++i])
 	{
-		flag = validate_var_name(cmd->args[i], cmd->args[0]);
+		flag = validate_var_name(cmd->args[i], cmd->args[0], cmd->args[i]);
 		if (exit)
 			flag = 1;
 		if (flag)

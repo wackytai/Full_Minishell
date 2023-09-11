@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 14:05:43 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/08 11:33:49 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/11 10:13:20 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ typedef struct s_data
 /* lexer.c */
 int					main(int argc, char **argv, char **envp);
 void				init_data(t_data *data, char **env);
-int					get_tokens(t_data *data, char *str);
+int					lexer(t_data *data, char *str);
 int					create_tokens(t_data *data, char *str);
 
 /* lexer_utils.c */
@@ -120,15 +120,15 @@ char				*check_path(t_tokens *env, t_cmd *cmd);
 /* builtins_utils.c */
 unsigned long long	ft_atoll(char *str);
 int					check_exit_arg(char *str);
-int					validate_var_name(char *name, char *cmd);
+int					validate_var_name(char *name, char *cmd, char *str);
 int					create_export_var(t_cmd *cmd, t_tokens **env);
-int					export_add_var(t_tokens **env, char **var);
+int					export_add_var(t_tokens **env, char **var, char *str);
 int					ft_isbuiltin(char *token);
 
 /* builtins_utils2.c */
 int					free_var(t_tokens **lst);
 unsigned char		check_number(char *str);
-int					print_error(char *str, char *s1);
+int					print_error(char *str, char *s1, char *s2);
 int					unset_var(t_data *data, t_cmd *cmd);
 
 /* operators.c */

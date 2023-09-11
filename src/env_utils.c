@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 09:49:43 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/07 14:45:46 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/11 09:10:40 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	update_env_lst(t_data *data, char **temp)
 					ft_strdup(temp[0]))))
 		{
 			free_list(&data->env);
-			printf("error getting env\n");
+			ft_putendl_fd("error getting env", STDERR_FILENO);
 			return (set_exit_code(1, true));
 		}
 	}
@@ -54,7 +54,7 @@ int	update_env_lst(t_data *data, char **temp)
 					ft_strdup(temp[0]))))
 		{
 			free_list(&data->env);
-			printf("error getting env\n");
+			ft_putendl_fd("error getting env", STDERR_FILENO);
 			return (set_exit_code(1, true));
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 15:32:27 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/07 11:26:17 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/11 09:53:48 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	check_exit_arg(char *str)
 	return (0);
 }
 
-int	validate_var_name(char *name, char *cmd)
+int	validate_var_name(char *name, char *cmd, char *str)
 {
 	int	i;
 	int	exit;
@@ -53,7 +53,7 @@ int	validate_var_name(char *name, char *cmd)
 	exit = 0;
 	if (name[0] != '_' && !ft_isalpha(name[0]))
 	{
-		print_error(&name[0], cmd);
+		print_error(&name[0], cmd, str);
 		return (1);
 	}
 	while (name[++i])
@@ -61,7 +61,7 @@ int	validate_var_name(char *name, char *cmd)
 		if (!ft_isalnum(name[i]) && name[i] != '_')
 		{
 			exit = 1;
-			print_error(&name[i], cmd);
+			print_error(&name[i], cmd, str);
 			break ;
 		}
 	}
@@ -87,7 +87,7 @@ int	create_export_var(t_cmd *cmd, t_tokens **env)
 		if (temp && free_var(&temp))
 			temp->content = ft_strdup(var[1]);
 		else
-			flag = export_add_var(env, var);
+			flag = export_add_var(env, var, cmd->args[i]);
 		if (flag)
 			exit = 1;
 		free_array(var);
@@ -95,12 +95,12 @@ int	create_export_var(t_cmd *cmd, t_tokens **env)
 	return (exit);
 }
 
-int	export_add_var(t_tokens **env, char **var)
+int	export_add_var(t_tokens **env, char **var, char *str)
 {
 	int			exit;
 
 	exit = 0;
-	if (validate_var_name(var[0], "export"))
+	if (validate_var_name(var[0], "export", str))
 		exit = 1;
 	else if (!var[1])
 		exit = ft_lstadd_back(env, ft_lstnew(0, ft_strdup(var[0])));
