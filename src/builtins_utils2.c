@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 11:34:52 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/11 10:03:05 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/13 11:39:01 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ unsigned char	check_number(char *str)
 		if (str[i++] == '-')
 			s = -1;
 	n = ft_atoll(&str[i]);
-	if ((n > LLONG_MAX && s > 0) || (n - 1 > LLONG_MAX && s < 0))
+	if (((ft_strlen(str) > 19 && s > 0) || (ft_strlen(str) > 20 && s < 0))
+		|| ((n > LLONG_MAX && s > 0) || (n - 1 > LLONG_MAX && s < 0)))
 	{
 		s = 1;
 		n = 2;

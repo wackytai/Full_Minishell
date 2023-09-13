@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 10:19:52 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/08/28 11:41:45 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/13 11:05:10 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,15 @@ void	signal_intercepter(void)
 
 void	child_signal_handler(int signal)
 {
-	if (signal != SIGINT)
-		return ;
-	set_exit_code(130, true);
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
+	if (signal == SIGINT)
+	{
+		set_exit_code(130, true);
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+	}
 	if (signal == SIGQUIT)
-		printf("Quit\n");
+		printf("Quit (core dumped)\n");
 	return ;
 }
 

@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 09:28:19 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/07 15:54:21 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/13 11:29:25 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,9 @@ char	*is_command(char **paths, char *cmd)
 
 	i = -1;
 	temp = 0;
-	if (!check_directory(cmd, 1))
-	{
-		check_exit_code(cmd, ": command not found", 127);
+	if (!check_directory(cmd, 1)
+		&& check_exit_code(cmd, ": command not found", 127))
 		return (0);
-	}
 	while (paths && paths[++i])
 	{
 		if (!access(cmd, X_OK))
@@ -36,7 +34,9 @@ char	*is_command(char **paths, char *cmd)
 			return (temp);
 		free(temp);
 	}
-	if (paths)
+	if (!paths)
+		check_exit_code(cmd, ": No such file or directory", 127);
+	else
 		check_exit_code(cmd, ": command not found", 127);
 	return (0);
 }
