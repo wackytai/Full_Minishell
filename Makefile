@@ -19,6 +19,11 @@ $(NAME):	$(C_SOURCES)
 			@$(MAKE) --no-print-directory -C $(LIBFT_DIR)
 			$(CC) $(CFLAGS) $(^) -o $(@) $(LIBFT) -fsanitize=address,undefined
 
+valgrind: 	all
+			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
+
+valgrind_supp: all
+				valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp ./$(NAME)
 clean:
 		@rm -f *.o
 		@$(MAKE) --no-print-directory -C $(LIBFT_DIR) clean
