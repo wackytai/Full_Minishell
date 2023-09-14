@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 14:10:11 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/11 10:13:28 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/14 12:42:24 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	main(int argc, char **argv, char **envp)
 		free(data.pid);
 		data.pid = 0;
 	}
-	free_all(0, &data, 0);
+	free_all(0, &data, 0, 1);
 	rl_clear_history();
 	return (set_exit_code(0, false));
 }

@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 18:31:05 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/13 12:06:15 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/14 12:41:19 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ int	executer(t_data *data)
 	data->tokens = t;
 	if (set_exit_code(1, false) && *data->pid == -1)
 	{
-		free_all(0, data, &head);
+		free_all(0, data, &head, 0);
 		return (0);
 	}
 	set_exit_code(wait_processes(data), true);
-	free_all(0, data, &head);
+	free_all(0, data, &head, 0);
 	return (0);
 }
 

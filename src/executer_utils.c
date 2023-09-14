@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 09:10:32 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/07 15:35:47 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/14 12:40:28 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,13 @@ int	exe_cmd(t_data *data, t_cmd **c)
 	else if (check_cmd(data->path, c))
 		exit_code = 127;
 	if (exit_code)
+	{
+		free_all(0, data, c, 1);
 		exit(exit_code);
+	}
 	envp = prep_envp(data->env);
 	execve((*c)->cmd_path, (*c)->args, envp);
-	free_array(envp);
+	free_all(0, data, c, 1);
 	exit(1);
 }
 

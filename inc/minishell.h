@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 14:05:43 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/11 10:13:20 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/14 12:56:24 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int					check_pipes(t_data *data, t_cmd **cmds);
 int					check_builtins(t_data *data, t_cmd	**cmd);
 int					update_lsts(t_data *data, int *i);
 int					ft_pwd(int out);
-int					ft_exit(t_cmd **cmd);
+int					ft_exit(t_data *data, t_cmd **cmd);
 int					ft_env(t_data *data, int out);
 
 /* builtins2.c */
@@ -149,7 +149,7 @@ int					here_doc(char *limiter, int fd);
 
 /* process_utils.c */
 int					init_pids(t_data *data);
-int					update_io(t_cmd *cmds, int pipe_fd[2]);
+int					update_io(t_data *data, t_cmd *cmds, int pipe_fd[2]);
 int					check_fds(t_cmd *cmds, int pipe[2]);
 int					handle_pipeline(t_data *data, t_cmd **cmds, int i,
 						int pipe_fd[2]);
@@ -215,9 +215,9 @@ void				forbidden_print(int flag, char *str);
 int					exit_error(char *str);
 
 /* clean.c */
-void				free_all(char *str, t_data *data, t_cmd **cmds);
-void				free_array(char **array);
-void				free_list(t_tokens **lst);
+void				free_all(char *str, t_data *data, t_cmd **cmds, int flag);
+int					free_array(char **array);
+int					free_list(t_tokens **lst);
 char				*free_joined(char *s1, char *s2);
 int					free_cmd_lst(t_cmd **lst);
 

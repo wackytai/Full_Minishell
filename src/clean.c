@@ -6,52 +6,58 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 10:31:04 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/06 09:34:36 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/14 12:57:52 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
 /* This function frees everything */
-void	free_all(char *str, t_data *data, t_cmd **cmds)
+void	free_all(char *str, t_data *data, t_cmd **cmds, int flag)
 {
-	int	flag;
-
-	flag = 0;
+	while (cmds && (*cmds)->prev)
+		*cmds = (*cmds)->prev;
 	if (cmds)
-		flag = free_cmd_lst(cmds);
+		free_cmd_lst(cmds);
 	if (str)
 		free(str);
-	if (data && data->tokens && !flag)
+	if (data && data->tokens)
+	{
 		free_list(&data->tokens);
-	if (data && data->env && !flag)
-		free_list(&data->env);
-	if (data && data->path && !flag)
-		free_array(data->path);
+		data->tokens = 0;
+	}
+	if (data && data->env && flag)
+		if (free_list(&data->env))
+			data->env = 0;
+	if (data && data->path && flag)
+		if (free_array(data->path))
+			data->path = 0;
 	if (data && data->pid && flag)
 	{
 		free(data->pid);
 		data->pid = 0;
 	}
+
 	unlink("here_doc");
 }
 
 /* Function to free a 2D array */
-void	free_array(char **array)
+int	free_array(char **array)
 {
 	int	i;
 
 	i = -1;
 	if (!array)
-		return ;
+		return (1);
 	while (array[++i])
 		free(array[i]);
 	free(array);
 	array = 0;
+	return (1);
 }
 
 /* This function frees linked list */
-void	free_list(t_tokens **lst)
+int	free_list(t_tokens **lst)
 {
 	t_tokens	*temp;
 
@@ -65,7 +71,8 @@ void	free_list(t_tokens **lst)
 		free(temp->var);
 		free(temp);
 	}
-	return ;
+	lst = 0;
+	return (1);
 }
 
 /* Function to free and join strings together */
@@ -96,5 +103,6 @@ int	free_cmd_lst(t_cmd **lst)
 		temp->next = 0;
 		free(temp);
 	}
+	lst = 0;
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 14:32:02 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/11 09:52:08 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/14 12:41:06 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	check_builtins(t_data *data, t_cmd	**cmd)
 	else if (!ft_strcmp((*cmd)->args[0], "exit"))
 	{
 		ft_putendl_fd("exit", out);
-		ft_exit(cmd);
+		ft_exit(data, cmd);
 		return (1);
 	}
 	return (0);
@@ -64,7 +64,7 @@ int	ft_pwd(int out)
 	return (1);
 }
 
-int	ft_exit(t_cmd **cmd)
+int	ft_exit(t_data *data, t_cmd **cmd)
 {
 	int	n;
 	int	j;
@@ -84,6 +84,7 @@ int	ft_exit(t_cmd **cmd)
 			return (set_exit_code(2, true));
 		n = check_number((*cmd)->args[1]);
 	}
+	free_all(0, data, cmd, 1);
 	exit (set_exit_code(n, true));
 }
 
