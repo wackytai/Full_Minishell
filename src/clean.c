@@ -6,14 +6,14 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 10:31:04 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/14 12:57:52 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/14 14:18:24 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
 /* This function frees everything */
-void	free_all(char *str, t_data *data, t_cmd **cmds, int flag)
+int	free_all(char *str, t_data *data, t_cmd **cmds, int flag)
 {
 	while (cmds && (*cmds)->prev)
 		*cmds = (*cmds)->prev;
@@ -37,8 +37,8 @@ void	free_all(char *str, t_data *data, t_cmd **cmds, int flag)
 		free(data->pid);
 		data->pid = 0;
 	}
-
 	unlink("here_doc");
+	return (1);
 }
 
 /* Function to free a 2D array */

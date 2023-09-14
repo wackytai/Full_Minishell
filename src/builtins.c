@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 14:32:02 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/14 12:41:06 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/14 14:18:53 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,16 +71,17 @@ int	ft_exit(t_data *data, t_cmd **cmd)
 
 	n = set_exit_code(0, false);
 	j = 0;
-	if (!(*cmd)->args[1])
+	if (!(*cmd)->args[1] && free_all(0, data, cmd, 1))
 		exit (set_exit_code(0, false));
 	else
 	{
 		if ((*cmd)->args[2] && !check_exit_arg((*cmd)->args[1]))
 		{
 			ft_putendl_fd("exit: too many arguments", STDERR_FILENO);
+			free_all(0, data, cmd, 1);
 			return (set_exit_code(1, true));
 		}
-		if (check_exit_arg((*cmd)->args[1]))
+		if (check_exit_arg((*cmd)->args[1]) && free_all(0, data, cmd, 1))
 			return (set_exit_code(2, true));
 		n = check_number((*cmd)->args[1]);
 	}

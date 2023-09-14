@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 14:05:43 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/14 12:56:24 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/14 14:18:11 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,7 @@ void				forbidden_print(int flag, char *str);
 int					exit_error(char *str);
 
 /* clean.c */
-void				free_all(char *str, t_data *data, t_cmd **cmds, int flag);
+int					free_all(char *str, t_data *data, t_cmd **cmds, int flag);
 int					free_array(char **array);
 int					free_list(t_tokens **lst);
 char				*free_joined(char *s1, char *s2);
