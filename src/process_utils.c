@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 11:09:29 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/14 12:41:51 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/18 09:20:54 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,6 @@ int	check_fds(t_cmd *cmds, int pipe[2])
 
 int	handle_pipeline(t_data *data, t_cmd **cmds, int i, int pipe_fd[2])
 {
-	if ((*cmds)->next)
-		if (pipe(pipe_fd) == -1)
-			return (1);
 	check_fds(*cmds, pipe_fd);
 	child_signal_intercepter();
 	data->pid[i] = fork();

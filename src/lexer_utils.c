@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 10:07:03 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/11 10:08:42 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/18 08:27:00 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 int	ft_isforbidden_char(char *str)
 {
 	if (str[0] && (str[0] == '\\' || str[0] == '`' || str[0] == '['
-			|| str[0] == ']' || str[0] == ';' || str[0] == '#'))
+			|| str[0] == ']' || str[0] == ';' || str[0] == '#'
+			|| str[0] == '{' || str[0] == '}'))
 	{
 		forbidden_print(2, str);
 		return (set_exit_code(1, true));

@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 18:31:05 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/14 12:41:19 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/18 09:03:55 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,18 +97,14 @@ int	update_cmd_lst(t_tokens *tokens, t_cmd **cmd)
 
 int	forking(t_data *data, t_cmd **cmds, int i)
 {
-	int	pipe_fd[2];
-
-	pipe_fd[0] = 0;
-	pipe_fd[1] = 0;
-	if ((*cmds)->next && pipe(pipe_fd) == -1)
+	if ((*cmds)->next && pipe(data->pipe_fd) == -1)
 		return (set_exit_code(1, true));
-	check_fds(*cmds, pipe_fd);
-	if (handle_pipeline(data, cmds, i, pipe_fd))
+	check_fds(*cmds, data->pipe_fd);
+	if (handle_pipeline(data, cmds, i, data->pipe_fd))
 		return (set_exit_code(1, true));
 	skip_to_pipe(data);
 	if ((*cmds)->next && data->tokens->next)
-		(*cmds)->next->fd_in = pipe_fd[0];
+		(*cmds)->next->fd_in = data->pipe_fd[0];
 	*cmds = (*cmds)->next;
 	return (0);
 }

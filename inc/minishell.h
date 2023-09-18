@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 14:05:43 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/14 14:18:11 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/18 09:02:41 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct s_data
 	t_tokens		*env;
 	char			**path;
 	pid_t			*pid;
+	int				pipe_fd[2];
 }					t_data;
 
 /* lexer.c */

@@ -24,7 +24,7 @@ valgrind: 	all
 			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
 
 valgrind_supp: all
-				valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp ./$(NAME)
+				valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=readline.supp ./$(NAME)
 clean:
 		@rm -f *.o
 		@$(MAKE) --no-print-directory -C $(LIBFT_DIR) clean

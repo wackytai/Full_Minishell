@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 14:10:11 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/14 12:42:24 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/18 09:03:28 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	init_data(t_data *data, char **env)
 	get_env(env, data);
 	data->tokens = 0;
 	data->pid = 0;
+	data->pipe_fd[0] = 0;
+	data->pipe_fd[1] = 0;
 	unlink("here_doc");
 }
 
