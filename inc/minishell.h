@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 14:05:43 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/18 09:02:41 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/18 12:00:30 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,11 +142,11 @@ int					cmd_size(t_tokens *tokens);
 char				**get_cmd_args(t_tokens *t);
 
 /* files.c */
-int					check_files(t_tokens *t, t_cmd *cmds);
+int					check_files(t_tokens *t, t_cmd *cmd, t_data *data);
 int					check_outfile(t_tokens *t, t_cmd *cmd);
-int					check_infile(t_tokens *t, t_cmd *cmd, int in);
-int					handle_here_doc(t_tokens *t, t_cmd *cmd);
-int					here_doc(char *limiter, int fd);
+int					check_infile(t_tokens *t, t_cmd *cmd, int in, t_data *data);
+int					handle_here_doc(t_data *data, t_tokens *t, t_cmd *cmd);
+int					here_doc(int fd, t_tokens *t, t_data *data, t_cmd *cmd);
 
 /* process_utils.c */
 int					init_pids(t_data *data);

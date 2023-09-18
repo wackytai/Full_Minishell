@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 18:31:05 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/18 09:03:55 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/18 11:59:40 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	exe_tokens(t_data *data, t_cmd **cmd)
 			data->tokens = data->tokens->next;
 			continue ;
 		}
-		check = check_files(data->tokens, *cmd);
+		check = check_files(data->tokens, *cmd, data);
 		if (check == 1)
 			return (1);
 		jump_tokens(data);

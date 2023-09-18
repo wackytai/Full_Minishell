@@ -6,21 +6,21 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 11:12:32 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/08 11:23:34 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/18 12:10:25 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 #include <stdbool.h>
 
-int	check_files(t_tokens *t, t_cmd *cmd)
+int	check_files(t_tokens *t, t_cmd *cmd, t_data *data)
 {
 	while (t && t->type != 2)
 	{
 		if (t->type < 2)
 		{
 			if (!ft_strcmp(t->content, "<<") || !ft_strcmp(t->content, "<"))
-				check_infile(t, cmd, cmd->rd_in);
+				check_infile(t, cmd, cmd->rd_in, data);
 			if (cmd->rd_in == -2)
 				return (1);
 			if (cmd->rd_in < 0)
@@ -59,7 +59,7 @@ int	check_outfile(t_tokens *t, t_cmd *cmd)
 	return (out);
 }
 
-int	check_infile(t_tokens *t, t_cmd *cmd, int in)
+int	check_infile(t_tokens *t, t_cmd *cmd, int in, t_data *data)
 {
 	if (!ft_strcmp(t->content, "<"))
 	{
@@ -82,11 +82,11 @@ int	check_infile(t_tokens *t, t_cmd *cmd, int in)
 		in = cmd->rd_in;
 	}
 	else
-		in = handle_here_doc(t, cmd);
+		in = handle_here_doc(data, t, cmd);
 	return (in);
 }
 
-int	handle_here_doc(t_tokens *t, t_cmd *cmd)
+int	handle_here_doc(t_data *data, t_tokens *t, t_cmd *cmd)
 {
 	pid_t	pid;
 	int		hd_fd;
@@ -100,14 +100,12 @@ int	handle_here_doc(t_tokens *t, t_cmd *cmd)
 	}
 	signal(SIGINT, SIG_IGN);
 	pid = fork();
-	if (pid < 0)
-	{
-		set_exit_code(1, true);
+	if (pid < 0 && set_exit_code(1, true))
 		return (-1);
-	}
 	if (!pid)
-		here_doc (t->next->content, hd_fd);
+		here_doc (hd_fd, t, data, cmd);
 	waitpid(pid, &status, 0);
+	close(hd_fd);
 	signal_intercepter();
 	if (WIFSIGNALED(status) && WTERMSIG(status) == 2 && printf("\n"))
 		return (-2);
@@ -115,13 +113,13 @@ int	handle_here_doc(t_tokens *t, t_cmd *cmd)
 	return (cmd->rd_in);
 }
 
-int	here_doc(char *limiter, int fd)
+int	here_doc(int fd, t_tokens *t, t_data *data, t_cmd *cmd)
 {
 	char		*line;
 	int			len;
 	static int	i;
 
-	len = ft_strlen(limiter);
+	len = ft_strlen(t->next->content);
 	i = 1;
 	signal(SIGINT, SIG_DFL);
 	while (1)
@@ -130,14 +128,14 @@ int	here_doc(char *limiter, int fd)
 		line = get_next_line(STDIN_FILENO);
 		i++;
 		if (!line)
-			print_message(1, limiter, i);
-		if (!line || (!ft_strncmp(line, limiter, len) && line[len] == '\n'))
+			print_message(1, t->next->content, i);
+		if (!line || (!ft_strncmp(line, t->next->content, len)
+				&& line[len] == '\n'))
 			break ;
 		write(fd, line, ft_strlen(line));
 		free(line);
 	}
 	close(fd);
-	if (line)
-		free(line);
+	free_all(line, data, &cmd, 1);
 	exit (set_exit_code(0, true));
 }

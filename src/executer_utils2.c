@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 10:29:12 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/18 08:41:33 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/18 11:59:31 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	check_pipes(t_data *data, t_cmd **cmds)
 	n = count_lst_type(data->tokens, 2);
 	if (!n && ft_isbuiltin((*cmds)->args[0]))
 	{
-		check = check_files(data->tokens, *cmds);
+		check = check_files(data->tokens, *cmds, data);
 		if (check && check != 1)
 			(*cmds)->rd_in = -1;
 		if (check == 1)
