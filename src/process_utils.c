@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 11:09:29 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/18 09:20:54 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/20 10:12:19 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ int	init_pids(t_data *data)
 
 int	update_io(t_data *data, t_cmd *cmds, int pipe_fd[2])
 {
-	if (dup2(cmds->fd_in, STDIN_FILENO) < 0)
+	if (cmds->fd_in != STDIN_FILENO && dup2(cmds->fd_in, STDIN_FILENO) < 0)
 	{
 		free_all(0, data, &cmds, 1);
 		exit(set_exit_code(1, true));
 	}
-	if (dup2(cmds->fd_out, STDOUT_FILENO) < 0)
+	if (cmds->fd_out != STDOUT_FILENO && dup2(cmds->fd_out, STDOUT_FILENO) < 0)
 	{
 		free_all(0, data, &cmds, 1);
 		exit(set_exit_code(1, true));
