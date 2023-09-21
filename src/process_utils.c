@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 11:09:29 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/20 10:12:19 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/21 09:44:47 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,23 @@ int	init_pids(t_data *data)
 
 int	update_io(t_data *data, t_cmd *cmds, int pipe_fd[2])
 {
-	if (cmds->fd_in != STDIN_FILENO && dup2(cmds->fd_in, STDIN_FILENO) < 0)
-	{
-		free_all(0, data, &cmds, 1);
-		exit(set_exit_code(1, true));
+	if (cmds->fd_in)
+	{	
+		if (dup2(cmds->fd_in, STDIN_FILENO) < 0)
+		{
+			free_all(0, data, &cmds, 1);
+			exit(set_exit_code(1, true));
+		}
 	}
-	if (cmds->fd_out != STDOUT_FILENO && dup2(cmds->fd_out, STDOUT_FILENO) < 0)
+	if (cmds->fd_out != 1)
 	{
-		free_all(0, data, &cmds, 1);
-		exit(set_exit_code(1, true));
+		if (dup2(cmds->fd_out, STDOUT_FILENO) < 0)
+		{
+			free_all(0, data, &cmds, 1);
+			exit(set_exit_code(1, true));
+		}
 	}
-	if (pipe_fd && pipe_fd[0] > 2)
+	if (pipe_fd && pipe_fd[0])
 		close(pipe_fd[0]);
 	if (cmds->fd_in > 2)
 		close(cmds->fd_in);
@@ -68,16 +74,16 @@ int	check_fds(t_cmd *cmds, int pipe[2])
 	return (0);
 }
 
-int	handle_pipeline(t_data *data, t_cmd **cmds, int i, int pipe_fd[2])
+int	handle_pipeline(t_data *data, t_cmd **cmds, int i)
 {
-	check_fds(*cmds, pipe_fd);
+	check_fds(*cmds, data->pipe_fd);
 	child_signal_intercepter();
 	data->pid[i] = fork();
 	if (data->pid[i] < 0)
 		return (1);
 	if (!data->pid[i])
 	{
-		update_io(data, (*cmds), pipe_fd);
+		update_io(data, (*cmds), data->pipe_fd);
 		if (check_builtins(data, cmds))
 		{
 			free_all(0, data, cmds, 1);

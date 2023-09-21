@@ -6,7 +6,7 @@
 /*   By: tlemos-m <tlemos-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 14:05:43 by tlemos-m          #+#    #+#             */
-/*   Updated: 2023/09/18 12:00:30 by tlemos-m         ###   ########.fr       */
+/*   Updated: 2023/09/21 09:18:50 by tlemos-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,8 +152,7 @@ int					here_doc(int fd, t_tokens *t, t_data *data, t_cmd *cmd);
 int					init_pids(t_data *data);
 int					update_io(t_data *data, t_cmd *cmds, int pipe_fd[2]);
 int					check_fds(t_cmd *cmds, int pipe[2]);
-int					handle_pipeline(t_data *data, t_cmd **cmds, int i,
-						int pipe_fd[2]);
+int					handle_pipeline(t_data *data, t_cmd **cmds, int i);
 int					wait_processes(t_data *data);
 
 /* wildcards_utils.c */
